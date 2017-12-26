@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}"/>
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="{% static 'script.js' %}"></script>
+    <title>Chat Bot</title>
+</head>
+<body>
+<h1>Chat Bot</h1>
+<div class="Wrapper" align="center">
+    <div class="Input">
+
+            <input type="text" name="inputMessage" value="" id="inputMessage">
+            <button>Send</button>
+
+    </div>
+    <div class="Chat">
+
+    </div>
+</div>
+</body>
+</html>

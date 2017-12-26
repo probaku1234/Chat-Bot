@@ -1,0 +1,23 @@
+h1 {
+  text-align: center;
+}
+
+.Wrapper {
+  align-items: center;
+}
+
+.Chat {
+  width: 80%;
+  border-style: solid;
+  min-height: 500px;
+}
+
+.userMessage {
+  background-color: yellow;
+  text-align: right;
+}
+
+.botMessage {
+  background-color: white;
+  text-align: left;
+}
