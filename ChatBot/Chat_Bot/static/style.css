@@ -7,9 +7,19 @@ h1 {
 }
 
 .Chat {
-  width: 80%;
+  width: 50%;
   border-style: solid;
-  min-height: 500px;
+  height: 500px;
+  overflow: scroll;
+}
+
+.input {
+  width: 50%;
+}
+
+#inputMessage {
+  width: 50%;
+  display: block;
 }
 
 .userMessage {
@@ -20,4 +30,17 @@ h1 {
 .botMessage {
   background-color: white;
   text-align: left;
+}
+
+.selectBoxWrapper {
+  width: 50%;
+}
+
+.selectBox {
+  display: inline;
+}
+
+.selectBox:hover {
+  background-color: yellow;
+  cursor: grab;
 }
