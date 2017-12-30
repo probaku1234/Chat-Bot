@@ -10,7 +10,23 @@ $(document).ready(function() {
         console.log($(this).text());
 
         selection = $(this).text();
-        writeMessage("You choose " + selection + ". Ask a question!",0);
+
+        $.ajax({
+            type: "GET",
+            url: "select/",
+            data: {
+                userSelection : selection
+            },
+            success: function (response) {
+                writeMessage("You choose " + selection + ".",0);
+                writeMessage(response,0)
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                alert("Please report this error: "+errorThrown+xhr.status+xhr.responseText);
+            }
+        })
+
+
     });
 
     $('#sendButton').click(function() {
@@ -25,10 +41,10 @@ $(document).ready(function() {
             data: {
                 userMessage: message,
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
-                userSelect: selection
             },
-            success: function(data) {
-                writeMessage("fuck you", 0)
+            success: function(response) {
+                var response = response;
+                writeMessage(response, 0)
             },
             error: function(xhr, textStatus, errorThrown) {
                 alert("Please report this error: "+errorThrown+xhr.status+xhr.responseText);
