@@ -3,7 +3,6 @@
 <head>
     {% load static %}
     <meta charset="utf-8">
-
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}"/>
     <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
     <script type="text/javascript" src="{% static 'script.js' %}"></script>
@@ -12,14 +11,16 @@
 <body>
 <h1>Chat Bot</h1>
 <div class="Wrapper" align="center">
+    <div class="Chat"></div>
     <div class="Input">
-
             <input type="text" name="inputMessage" value="" id="inputMessage">
-            <button>Send</button>
-
+            <button id="sendButton">Send</button>
     </div>
-    <div class="Chat">
-
+    <div class="selectBoxWrapper">
+        <button class="selectBox">apply</button>
+        <button class="selectBox">B</button>
+        <button class="selectBox">C</button>
+        <button class="selectBox">D</button>
     </div>
 </div>
 </body>
