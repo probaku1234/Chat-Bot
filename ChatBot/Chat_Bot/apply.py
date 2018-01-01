@@ -2,6 +2,7 @@ from . import student, transfer, international, freshman
 
 class apply():
     message = "What is your type of student? (transfer, international, freshman)"
+    category = ""
 
     def createStudent(self, studentType):
         if (studentType == "transfer"):
@@ -10,13 +11,8 @@ class apply():
             self.student = international.international()
         elif (studentType == "freshman"):
             self.student = freshman.freshman()
+        category = studentType
 
+    # we need a method to recognize from user input -> our expected input
     def executeCommand(self, command):
-        if (command == "documents"):
-            return self.student.showRequiredDocuments()
-        if (command == "application"):
-            return self.student.showApplicationProcess()
-        if (command == "deadlines"):
-            return self.student.showDeadlines()
-        if (command == "admission"):
-            return self.student.showAdmissionCriteria()
+        return self.student.show(command)

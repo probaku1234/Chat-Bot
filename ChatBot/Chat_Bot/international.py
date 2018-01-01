@@ -1,6 +1,10 @@
 from .student import student
 
 class international(student):
+
+    def show(self, message):
+        return "whatever"
+
     def showRequiredDocuments(self):
         return "document"
 
