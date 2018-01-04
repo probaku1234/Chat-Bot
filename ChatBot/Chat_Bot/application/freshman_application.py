@@ -1,6 +1,6 @@
-from .student import student
+from .student_application import student
 
-class transfer(student):
+class freshman(student):
 
     def show(self, message):
         return "whatever"
@@ -16,3 +16,6 @@ class transfer(student):
 
     def showAdmissionCriteria(self):
         return "criteria"
+
+    def getType(self):
+        return "freshman"

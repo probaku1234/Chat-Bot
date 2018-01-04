@@ -1,18 +1,19 @@
-from abc import ABC, abstractmethod
-from .words_list import words_list
+from .student_application import student
+from ChatBot.Chat_Bot.words_list import words_list
 import requests
 import re
 from bs4 import BeautifulSoup
 
-class student(ABC):
+
+class application_Controller(student):
 
     url_prefix = 'http://www.stonybrook.edu/undergraduate-admissions/apply/'
     url_suffix = '/application-procedures/'
     url = ''
 
     # student_type SHOULD ONLY BE "freshman", "transfer" and "international"
-    def getMessage(self, keywords, student_type):
-        self.url = self.url_prefix + student_type + self.url_suffix
+    def getMessage(self, keywords, student):
+        self.url = self.url_prefix + student.getType() + self.url_suffix
         message = self.search(keywords)
         if(keywords == words_list.requiredDocs):
             self.showRequiredDocuments()
@@ -36,9 +37,10 @@ class student(ABC):
 
         for element in target_html:
             result = []
-            found_content = self.parseDiv(element, keywords, result)
-            if (found_content != []):
-                soup = BeautifulSoup(str(found_content), "html.parser")
+            parsedDiv_result = self.parseDiv(element, keywords, result)
+            if (parsedDiv_result != []):
+                soup = BeautifulSoup(str(parsedDiv_result), "html.parser")
+                found_content = self.parseResult(result, keywords)
                 break
 
         #PROCESS WITH TEXTBLOB (ORGANIZE AND PRINT IT IN A READABLE WAY)
@@ -57,26 +59,26 @@ class student(ABC):
                 result.append(target.find_parent("div"))
         return result
 
-    @abstractmethod
-    def show(self, keywords):
-        pass
+    def parseResult(self, result, keyword):
+        isURL = False
+        content = ""
+        for element in result:
+            soup = BeautifulSoup(str(element), "html.parser")
+            a_string = soup.find_all("a")
+            if (a_string != None):
+                a_string_list = soup.select("div a")
+                target_url = self.a_string_check(a_string_list, keyword)
+                if (target_url != None):
+                    content += target_url
+                    isURL = True
+            if (isURL == False):
+                content += element.get_text()
+        return content
 
-    @abstractmethod
-    def showRequiredDocuments(self):
-        pass
-
-    @abstractmethod
-    def showApplicationProcess(self):
-        pass
-
-    @abstractmethod
-    def showDeadlines(self):
-        pass
-
-    @abstractmethod
-    def showAdmissionCriteria(self):
-        pass
-
-    def showContact(self):
-        return "hello"
-
+    def a_string_check(self, a_string_list, keyword):
+        target_url = None
+        for link in a_string_list:
+            if(link.string == keyword):
+                target_url = link
+                break
+        return target_url

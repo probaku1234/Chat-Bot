@@ -1,4 +1,4 @@
-from .student import student
+from .student_application import student
 
 class international(student):
 
@@ -16,3 +16,6 @@ class international(student):
 
     def showAdmissionCriteria(self):
         return "criteria"
+
+    def getType(self):
+        return "international"
