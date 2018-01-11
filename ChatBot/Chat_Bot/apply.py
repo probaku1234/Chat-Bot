@@ -1,5 +1,5 @@
-from ChatBot.Chat_Bot.application import international_application, transfer_application, freshman_application
-from ChatBot.Chat_Bot.application import application_Controller
+from .application import international_application, transfer_application, freshman_application
+from .application import application_Controller
 
 class apply():
     message = "What is your type of student? (transfer, international, freshman)"

@@ -1,5 +1,5 @@
 from .student_application import student
-from ChatBot.Chat_Bot.words_list import words_list
+from .words_list import words_list
 import requests
 import re
 from bs4 import BeautifulSoup
