@@ -4,6 +4,7 @@ from .application import application_Controller
 class apply():
     message = "What is your type of student? (transfer, international, freshman)"
     category = ""
+    controller = None
 
     def createStudent(self, studentType):
         if (studentType == "transfer"):
