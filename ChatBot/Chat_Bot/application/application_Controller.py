@@ -1,19 +1,165 @@
-from .student_application import student
 from .words_list import words_list
 import requests
 import re
 from bs4 import BeautifulSoup
 
 
-class application_Controller(student):
+class application_Controller():
 
-    url_prefix = 'http://www.stonybrook.edu/undergraduate-admissions/apply/'
-    url_suffix = '/application-procedures/'
-    url = ''
+    student = None
+    soup = None
+    keyword = None
+    target_type = None
+    target_relationship = None
+    result = []
+    homepage = "http://www.stonybrook.edu/"
+    underg_admissions = "undergraduate-admissions/"
+    apply = "apply/"
+    freshman = "freshman/"
+    application_procedures = "application-procedures/"
 
+
+    # CONSTRUCTOR
     # student_type SHOULD ONLY BE "freshman", "transfer" and "international"
+    def __init__(self, student):
+        self.setStudent(student)
+
+    def setStudent(self, student):
+        self.student = student
+        self.setURL(student)
+        self.setSoup()
+
+    def setURL(self, student):
+        self.url = self.homepage + self.underg_admissions + self.apply + \
+                   student.getType() + self.application_procedures
+
+    def setSoup(self):
+        page = requests.get(self.url)
+        self.soup = BeautifulSoup(page.text, 'html.parser')
+
+    def search(self, text):
+        parsing_text_result = self.parsing_text(text)
+        parsing_table_result = self.parsing_table(text)
+        for element in parsing_text_result:
+            self.getSibling(element)
+            if (self.target_relationship == None):
+                self.getParent(element)
+        for element in parsing_table_result:
+            self.getTableContent(element)
+        if(len(parsing_text_result) == 0):
+            parsing_url_result = self.parsing_url(self.soup, text)
+            for element in parsing_url_result:
+                self.getURL(element)
+        self.prettify_result()
+        # need to return a string
+
+    def parsing_text(self, text):
+        target_tag_names = ["h1", "h2", "h3", "h4", "h5", "h6", "p", "b", "span"]
+        temp_list = []
+        matches = []
+        target_tags = self.soup.find_all(target_tag_names)
+        temp_list.append(target_tags)
+
+        # look for all tags that match the text
+        for list in temp_list:
+            for element in list:
+                if (text in element.get_text()):
+                    matches.append(element)
+        return matches
+
+    def parsing_url(self, text):
+        target_tag_name = "a"
+        matches = []
+        target_tags = self.soup.find_all(target_tag_name)
+        for target_tag in target_tags:
+            if (text in target_tag.get_text()):
+                matches.append(target_tag)
+        return matches
+
+    def parsing_table(self, text):
+        matches = []
+        tables = self.soup.find_all('table')
+        for table in tables:
+            # look for all tables that has text
+            if (table.find(string=re.compile(text))):
+                matches.append(table)
+        return matches
+
+    def getSibling(self, target_tag):
+        sibling = target_tag.find_next_sibling()
+        if (sibling != None):
+            if (sibling.name != "br"):
+                self.target_relationship = "has_sibling"
+                self.result.append(target_tag)
+                self.result.append(sibling)
+            else:
+                sibling = None
+        return sibling
+
+    def getParent(self, target_tag):
+        parent = target_tag.find_parent()
+        if (parent != None):
+            self.target_relationship = "has_parent"
+            self.result.append(parent)
+        return parent
+
+    def getTableContent(self, target_tag):
+        self.result.clear()
+        th_tags = []
+        rows = target_tag.find_all('tr')
+
+        for row in rows:
+            temp = row.find_all('th')
+            if (temp != []):
+                th_tags = temp
+                break
+
+        for row in rows:
+            td_tags = row.find_all('td')
+            th_tags_len = len(th_tags)
+            td_tags_len = len(td_tags)
+            if (th_tags_len > 0 and td_tags_len > 0):
+                for i in range(0, th_tags_len):
+                    self.result.append(th_tags[i])
+                    self.result.append(td_tags[i])
+
+    def getURL(self, link):
+        self.result.append(link)
+
+    def prettify_result(self):
+        for element in self.result:
+            url_tag = element.find("a")
+            if (url_tag != None):
+                url = url_tag.get("href")
+                if ("http" not in url):
+                    url = self.homepage + url
+                if (element.get_text() == url_tag.get_text()):
+                    print(url_tag.get_text() + ": " + url)
+                else:
+                    print(element.get_text() + url_tag.get_text() + ": " + url)
+            elif (element.name == "a"):
+                url = element.get("href")
+                if ("http" not in url):
+                    url = self.homepage + url
+                print(element.get_text() + ": " + url)
+            else:
+                print(element.get_text())
+                #if element.get_text()[-1] end with ":', then print......
+                #print(element.get_text()[-1])
+                #CASE: ADDITIONAL REQUIREMENTS
+
+
+    # TEST_CASE:
+    #   "Supporting Documents" - entire div class (text)
+    #   "High School Transcript" - sibling (text)
+    #   "Deadline" - body table (table)
+    #   "THE COMMON APPLICATION" - a href (url)
+    #   "Social Work" - a href inside p (text and url)
+    #   "Admission Criteria" - a class (url)
+
+    ################################################################################################################
     def getMessage(self, keywords, student):
-        self.url = self.url_prefix + student.getType() + self.url_suffix
+
         message = self.search(keywords)
         if(keywords == words_list.requiredDocs):
             self.showRequiredDocuments()
@@ -27,58 +173,4 @@ class application_Controller(student):
             self.showContact(message)
         else:
             self.show(message)
-
-    # METHOD TO TRAVERSE AND LOCATE THE CONTENT BY SEARCHING THE HTML
-    # keyword: the keyword that we are looking for
-    def search(self, keywords):
-        page = requests.get(self.url)
-        soup = BeautifulSoup(page.text, 'html.parser')
-        target_html = soup.find_all("div")
-
-        for element in target_html:
-            result = []
-            parsedDiv_result = self.parseDiv(element, keywords, result)
-            if (parsedDiv_result != []):
-                soup = BeautifulSoup(str(parsedDiv_result), "html.parser")
-                found_content = self.parseResult(result, keywords)
-                break
-
-        #PROCESS WITH TEXTBLOB (ORGANIZE AND PRINT IT IN A READABLE WAY)
-        message = "RESULT"
-        return message
-
-    # A RECURSIVE METHOD TO GET ALL PARENTS OF THE KEYWORD
-    # div_content: the content to recurse
-    # keyword: the keyword that we are looking for
-    # result: A list of parents of the keyword
-    def parseDiv(self, div_content, keyword, result):
-        target_soup = BeautifulSoup(str(div_content), "html.parser")
-        target_list = target_soup.find_all(text=re.compile(keyword))
-        for target in target_list:
-            if (target != None):
-                result.append(target.find_parent("div"))
-        return result
-
-    def parseResult(self, result, keyword):
-        isURL = False
-        content = ""
-        for element in result:
-            soup = BeautifulSoup(str(element), "html.parser")
-            a_string = soup.find_all("a")
-            if (a_string != None):
-                a_string_list = soup.select("div a")
-                target_url = self.a_string_check(a_string_list, keyword)
-                if (target_url != None):
-                    content += target_url
-                    isURL = True
-            if (isURL == False):
-                content += element.get_text()
-        return content
-
-    def a_string_check(self, a_string_list, keyword):
-        target_url = None
-        for link in a_string_list:
-            if(link.string == keyword):
-                target_url = link
-                break
-        return target_url
+    #############################################################################################################

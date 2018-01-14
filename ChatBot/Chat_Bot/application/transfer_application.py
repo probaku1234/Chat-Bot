@@ -6,16 +6,21 @@ class transfer(student):
         return "whatever"
 
     def showRequiredDocuments(self):
+        # keyword "sent"
         return "document"
 
     def showApplicationProcess(self):
+        # keyword "Step"
         return "application"
 
-    def showDeadlines(self):
-        return "deadline"
+    # def showDeadlines(self):
+    #     #Fall 2018
+    #     #Spring 2018
+    #     return "deadline"
 
-    def showAdmissionCriteria(self):
-        return "criteria"
+    # def showAdmissionCriteria(self):
+    #     # keyword "Criteria"
+    #     return "criteria"
 
     def getType(self):
         return "transfer"

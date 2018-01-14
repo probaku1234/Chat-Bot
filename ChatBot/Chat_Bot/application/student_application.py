@@ -14,13 +14,13 @@ class student(ABC):
     def showApplicationProcess(self):
         pass
 
-    @abstractmethod
     def showDeadlines(self):
-        pass
+        # keyword "Deadline"
+        return "Deadline"
 
-    @abstractmethod
     def showAdmissionCriteria(self):
-        pass
+        # keyword "Criteria"
+        return "Criteria"
 
     @abstractmethod
     def getType(self):

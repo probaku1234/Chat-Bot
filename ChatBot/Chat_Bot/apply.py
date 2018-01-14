@@ -21,4 +21,4 @@ class apply():
     #    return self.student.show(command)
 
     def executeCommand(self, command):
-        self.controller.getMessage(command, self.student)
+        self.controller.search(command)
