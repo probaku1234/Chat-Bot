@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 class student(ABC):
 
     @abstractmethod
-    def show(self, keywords):
+    def show(self):
         pass
 
     @abstractmethod
@@ -15,17 +15,15 @@ class student(ABC):
         pass
 
     def showDeadlines(self):
-        # keyword "Deadline"
-        return "Deadline"
+        return ["Deadline"]
 
     def showAdmissionCriteria(self):
-        # keyword "Criteria"
-        return "Criteria"
+        return ["Criteria"]
 
     @abstractmethod
     def getType(self):
         pass
 
     def showContact(self):
-        return "hello"
+        return ["hello"]
 

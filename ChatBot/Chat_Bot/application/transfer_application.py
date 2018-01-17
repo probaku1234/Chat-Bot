@@ -2,16 +2,16 @@ from .student_application import student
 
 class transfer(student):
 
-    def show(self, message):
+    def show(self):
         return "whatever"
 
     def showRequiredDocuments(self):
         # keyword "sent"
-        return "document"
+        return ["sent"]
 
     def showApplicationProcess(self):
         # keyword "Step"
-        return "application"
+        return ["Step"]
 
     # def showDeadlines(self):
     #     #Fall 2018

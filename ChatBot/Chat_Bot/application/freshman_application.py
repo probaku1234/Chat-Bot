@@ -2,17 +2,14 @@ from .student_application import student
 
 class freshman(student):
 
-    def show(self, message):
+    def show(self):
         return "whatever"
 
     def showRequiredDocuments(self):
-        # keyword "Supporting Documents"
-        return "document"
+        return ["Supporting Documents"]
 
     def showApplicationProcess(self):
-        # keyword "Apply Online"
-        # keyword "Supporting Documents"
-        return "application"
+        return ["Apply Online", "Supporting Documents"]
 
     # def showDeadlines(self):
     #     #FALL 2018

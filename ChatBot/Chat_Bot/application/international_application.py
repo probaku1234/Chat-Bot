@@ -2,18 +2,18 @@ from .student_application import student
 
 class international(student):
 
-    def show(self, message):
+    def show(self):
         return "whatever"
 
     def showRequiredDocuments(self):
         # keyword "upload"
-        # keyword "English Proficiency"
-        # keyword "Academic Records"
-        return "document"
+        # keyword
+        # keyword
+        return ["upload", "English Proficiency", "Academic Records"]
 
     def showApplicationProcess(self):
         # keyword "Step"
-        return "application"
+        return ["Step"]
 
     # def showDeadlines(self):
     #     # FALL 2018 - Freshmen
