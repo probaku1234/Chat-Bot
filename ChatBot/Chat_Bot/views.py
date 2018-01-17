@@ -25,7 +25,7 @@ def findMatchInList(sentence):
     for word, pos in sentence.tags:
         if (pos == 'NN' or pos == "NNS"):
             print(word, pos)
-            for keyword in words_list:
+            for keyword in words_list.words_list:
                 if word in keyword._value_.lower():
                     return keyword._value_
 
@@ -59,7 +59,7 @@ def processRequest(request):
         else:
             keyword = findMatchInList(textBlobSentence)
             if (keyword != None):
-                return HttpResponse(command.executeCommand(keyword.string))
+                return HttpResponse(command.executeCommand(keyword))
             else:
                 return HttpResponse("Please speak human language.")
     else:

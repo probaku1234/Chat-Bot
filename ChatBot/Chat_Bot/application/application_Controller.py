@@ -47,7 +47,7 @@ class application_Controller():
         for element in parsing_table_result:
             self.getTableContent(element)
         if(len(parsing_text_result) == 0):
-            parsing_url_result = self.parsing_url(self.soup, text)
+            parsing_url_result = self.parsing_url(text)
             for element in parsing_url_result:
                 self.getURL(element)
         self.prettify_result()

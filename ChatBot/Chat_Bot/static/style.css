@@ -4,6 +4,7 @@ h1 {
 
 .Wrapper {
   align-items: center;
+  background-image: url("https://cdn.patchcdn.com/users/21766/2012/02/T800x600/f67ef214a6fcfcb64a7565d2281e6b18.jpg");
 }
 
 .Chat {
@@ -11,6 +12,7 @@ h1 {
   border-style: solid;
   height: 500px;
   overflow: scroll;
+  background-color: #00D7FF;
 }
 
 .input {
@@ -25,11 +27,22 @@ h1 {
 .userMessage {
   background-color: yellow;
   text-align: right;
+  width: 50%;
+  border-radius: 25px;
+  border: 2px solid #73AD21;
+  padding: 20px;
+  float: right;
 }
 
 .botMessage {
   background-color: white;
   text-align: left;
+  width: 50%;
+  border-radius: 25px;
+  border: 2px solid #73AD21;
+  padding: 20px;
+  float: left;
+  display: block;
 }
 
 .selectBoxWrapper {

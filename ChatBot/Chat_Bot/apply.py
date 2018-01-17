@@ -22,6 +22,7 @@ class apply():
 
     def executeCommand(self, command):
         temp = None
+        keywords = []
         if(command == words_list.words_list.process):
             temp = self.student.showApplicationProcess()
         elif(command == words_list.words_list.requiredDocs):
@@ -33,7 +34,7 @@ class apply():
         elif(command == words_list.words_list.deadlines):
             temp = self.student.showDeadlines()
         if(temp != None):
-            keywords = temp
+            keywords.append(temp)
         else:
             keywords = command
         for keyword in keywords:
