@@ -2,9 +2,9 @@ from enum import Enum
 
 class words_list(Enum):
     deadlines = "Deadlines"
-    requiredDocs = "Supporting Documents"
-    process = "Step"
+    requiredDocs = "Documents"
+    process = "process"
     criteria = "Criteria"
-
+    contact = "contact"
 
 
