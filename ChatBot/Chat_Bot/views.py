@@ -11,6 +11,9 @@ global command
 global keywordList
 global state
 
+def processResponse(message):
+    return message.replace("\n","<br/>")
+
 def getSynlist(word):
     synonyms = wordnet.synsets(word)
     return set(chain.from_iterable([word.lemma_names() for word in synonyms]))
@@ -59,7 +62,7 @@ def processRequest(request):
         else:
             keyword = findMatchInList(textBlobSentence)
             if (keyword != None):
-                return HttpResponse(command.executeCommand(keyword))
+                return HttpResponse(processResponse(command.executeCommand(keyword)))
             else:
                 return HttpResponse("Please speak human language.")
     else:
@@ -73,3 +76,4 @@ def processSelection(requset):
         return HttpResponse(command.message)
     else:
         raise Http404
+

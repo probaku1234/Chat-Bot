@@ -50,7 +50,7 @@ class application_Controller():
             parsing_url_result = self.parsing_url(text)
             for element in parsing_url_result:
                 self.getURL(element)
-        self.prettify_result()
+        return self.prettify_result()
         # need to return a string
 
     def parsing_text(self, text):

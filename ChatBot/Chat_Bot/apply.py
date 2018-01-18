@@ -37,5 +37,7 @@ class apply():
             keywords = temp
         else:
             keywords.append(command)
+        message = ""
         for keyword in keywords:
-            self.controller.search(keyword)
+            message += self.controller.search(keyword)
+        return message
