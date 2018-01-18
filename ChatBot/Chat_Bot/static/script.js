@@ -53,10 +53,14 @@ $(document).ready(function() {
     });
     
     function writeMessage(message, target) {
+        var name;
         if (target == 0) {
-            $('.Chat').append("<div class='botMessage'>" + message + "</div>");
+            name = "botMessage";
         } else {
-            $('.Chat').append("<div class='userMessage'>" + message + "</div>");
+            name = "userMessage";
         }
+        $('.Chat').append("<div class="+ name + ">" + message + "</div>");
+        var div = document.getElementsByClassName('Chat');
+        div[0].scrollTop = div[0].scrollHeight;
     }
 });
