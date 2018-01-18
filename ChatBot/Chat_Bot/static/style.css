@@ -32,6 +32,7 @@ h1 {
   border: 2px solid #73AD21;
   padding: 20px;
   float: right;
+  margin-bottom: 10px;
 }
 
 .botMessage {
@@ -43,6 +44,7 @@ h1 {
   padding: 20px;
   float: left;
   display: block;
+  margin-bottom: 10px;
 }
 
 .selectBoxWrapper {

@@ -31,34 +31,32 @@ $(document).ready(function() {
 
     $('#sendButton').click(function() {
         var message = $("#inputMessage").val();
-        console.log(message);
-        writeMessage(message, 1);
+        if (message != "") {
+            console.log(message);
+            writeMessage(message, 1);
 
-        $('#inputMessage').val("");
-        $.ajax({
-            type: "GET",
-            url: "post/",  // or just url: "/my-url/path/"
-            data: {
-                userMessage: message,
-                'csrfmiddlewaretoken': '{{ csrf_token }}',
-            },
-            success: function(response) {
-                var response = response;
-                writeMessage(response, 0)
-            },
-            error: function(xhr, textStatus, errorThrown) {
-                alert("Please report this error: "+errorThrown+xhr.status+xhr.responseText);
-            }
-        });
+            $('#inputMessage').val("");
+            $.ajax({
+                type: "GET",
+                url: "post/",  // or just url: "/my-url/path/"
+                data: {
+                    userMessage: message,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                },
+                success: function(response) {
+                    var response = response;
+                    writeMessage(response, 0)
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    alert("Please report this error: "+errorThrown+xhr.status+xhr.responseText);
+                }
+            });
+        }
     });
     
     function writeMessage(message, target) {
         var name;
-        if (target == 0) {
-            name = "botMessage";
-        } else {
-            name = "userMessage";
-        }
+        name = target == 0 ? "botMessage" : "userMessage";
         $('.Chat').append("<div class="+ name + ">" + message + "</div>");
         var div = document.getElementsByClassName('Chat');
         div[0].scrollTop = div[0].scrollHeight;
