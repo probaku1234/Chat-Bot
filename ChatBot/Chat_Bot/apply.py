@@ -23,19 +23,19 @@ class apply():
     def executeCommand(self, command):
         temp = None
         keywords = []
-        if(command == words_list.words_list.process):
+        if(command == words_list.words_list.process.value):
             temp = self.student.showApplicationProcess()
-        elif(command == words_list.words_list.requiredDocs):
+        elif(command == words_list.words_list.requiredDocs.value):
             temp = self.student.showRequiredDocuments()
-        elif(command == words_list.words_list.contact):
+        elif(command == words_list.words_list.contact.value):
             temp = self.student.showContact()
-        elif(command == words_list.words_list.criteria):
+        elif(command == words_list.words_list.criteria.value):
             temp = self.student.showAdmissionCriteria()
-        elif(command == words_list.words_list.deadlines):
+        elif(command == words_list.words_list.deadlines.value):
             temp = self.student.showDeadlines()
         if(temp != None):
-            keywords.append(temp)
+            keywords = temp
         else:
-            keywords = command
+            keywords.append(command)
         for keyword in keywords:
             self.controller.search(keyword)

@@ -8,16 +8,13 @@ class application_Controller():
 
     student = None
     soup = None
-    keyword = None
-    target_type = None
-    target_relationship = None
     result = []
     homepage = "http://www.stonybrook.edu/"
     underg_admissions = "undergraduate-admissions/"
     apply = "apply/"
-    freshman = "freshman/"
     application_procedures = "application-procedures/"
-
+    target_type = None
+    target_relationship = None
 
     # CONSTRUCTOR
     # student_type SHOULD ONLY BE "freshman", "transfer" and "international"
@@ -31,13 +28,16 @@ class application_Controller():
 
     def setURL(self, student):
         self.url = self.homepage + self.underg_admissions + self.apply + \
-                   student.getType() + self.application_procedures
+                   student.getType() + "/" + self.application_procedures
 
     def setSoup(self):
         page = requests.get(self.url)
         self.soup = BeautifulSoup(page.text, 'html.parser')
 
     def search(self, text):
+        self.target_type = None
+        self.target_relationship = None
+        self.result.clear()
         parsing_text_result = self.parsing_text(text)
         parsing_table_result = self.parsing_table(text)
         for element in parsing_text_result:
@@ -127,6 +127,7 @@ class application_Controller():
         self.result.append(link)
 
     def prettify_result(self):
+        message = ""
         for element in self.result:
             url_tag = element.find("a")
             if (url_tag != None):
@@ -134,19 +135,22 @@ class application_Controller():
                 if ("http" not in url):
                     url = self.homepage + url
                 if (element.get_text() == url_tag.get_text()):
-                    print(url_tag.get_text() + ": " + url)
+                    message += url_tag.get_text() + ": " + url
                 else:
-                    print(element.get_text() + url_tag.get_text() + ": " + url)
+                    message += element.get_text() + url_tag.get_text() + ": " + url
             elif (element.name == "a"):
                 url = element.get("href")
                 if ("http" not in url):
                     url = self.homepage + url
-                print(element.get_text() + ": " + url)
+                message += element.get_text() + ": " + url
             else:
-                print(element.get_text())
+                message += element.get_text()
                 #if element.get_text()[-1] end with ":', then print......
                 #print(element.get_text()[-1])
                 #CASE: ADDITIONAL REQUIREMENTS
+            message += "\n"
+        print(message)
+        return message
 
 
     # TEST_CASE:
