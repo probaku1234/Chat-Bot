@@ -39,5 +39,9 @@ class apply():
             keywords.append(command)
         message = ""
         for keyword in keywords:
+            print(keyword)
             message += self.controller.search(keyword)
+        if message == "":
+            message = "Sorry for the long waiting. We couldn't find any related inforamtion. " \
+                   "For further or more detail information, please check out Stony Brook Application Procedure page."
         return message

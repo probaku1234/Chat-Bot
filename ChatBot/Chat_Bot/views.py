@@ -1,6 +1,7 @@
 from django.http import HttpResponse, Http404
 from django.shortcuts import render
 from textblob import TextBlob
+from textblob.np_extractors import ConllExtractor
 from . import commandFactory
 from .application import words_list
 from itertools import chain
@@ -40,6 +41,13 @@ def findMatchInList(sentence):
             return None
     return None
 
+def parseNoun(sentence):
+    extractor = ConllExtractor()
+    blob = TextBlob(sentence, np_extractor=extractor)
+    noun_list = blob.noun_phrases
+    print(noun_list)
+    return noun_list
+
 def processRequest(request):
     if (request.is_ajax()):
         global command
@@ -64,9 +72,21 @@ def processRequest(request):
             if (keyword != None):
                 return HttpResponse(processResponse(command.executeCommand(keyword)))
             else:
-                return HttpResponse("Please speak human language.")
+                noun_list = parseNoun(message)
+                if noun_list == []:
+                    message = "Please speak human language."
+                else:
+                    for noun in noun_list:
+                        modifiedNoun_list = inputModifier(noun)
+                        for modifiedNoun in modifiedNoun_list:
+                            message = command.executeCommand(modifiedNoun)
+                return HttpResponse(processResponse(message))
+
     else:
         raise Http404
+
+def inputModifier(keyword):
+    return [keyword, keyword.title(), keyword.upper()]
 
 def processSelection(requset):
     if (requset.is_ajax()):
