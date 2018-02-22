@@ -2,7 +2,7 @@ $(document).ready(function() {
     var selection;
     $(".Input").hide();
 
-    writeMessage("Hello, I'm fucking chatbot! Please select the type of information you want!",0);
+    writeMessage("Hello, I'm a chatbot! Please select the type of information you want!",0);
 
     $(".selectBox").click(function () {
        $('.Input').show();
